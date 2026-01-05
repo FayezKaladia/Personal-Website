@@ -56,7 +56,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="space-y-4">
               <p className="font-display text-primary text-lg font-medium">{tagline}</p>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-                hi im Fayez
+                Hi, i'm Fayez
               </h1>
               <h2 className="font-display text-2xl sm:text-3xl text-muted-foreground font-light">
                 {role}

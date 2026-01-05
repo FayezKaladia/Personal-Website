@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ShaderAnimation } from '@/components/ui/shader-lines';
 
 interface IntroSectionProps {
   name: string;
@@ -35,6 +36,7 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-glow" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-glow-secondary/5 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: '1.5s' }} />
         <div className="absolute inset-0 bg-noise opacity-30" />
+        <ShaderAnimation />
       </div>
 
       {/* Content */}
@@ -86,7 +88,7 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
             onClick={handleEnter}
             className="group min-w-[200px]"
           >
-            <span>Enter Portfolio</span>
+            <span>Discover My Journey</span>
             <ArrowDown className="w-5 h-5 transition-transform group-hover:translate-y-1" />
           </Button>
         </div>
@@ -96,14 +98,14 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
       <div
         className={cn(
           'absolute bottom-10 left-1/2 -translate-x-1/2 transition-all duration-1000',
-          isLoaded ? 'opacity-60' : 'opacity-0'
+          isLoaded ? 'opacity-80' : 'opacity-0'
         )}
         style={{ transitionDelay: '1800ms' }}
       >
-        <div className="flex flex-col items-center gap-2 text-muted-foreground">
-          <span className="text-xs font-body tracking-widest uppercase">Scroll Down</span>
-          <div className="w-5 h-8 border-2 border-muted-foreground/30 rounded-full flex justify-center pt-2">
-            <div className="w-1 h-2 bg-primary rounded-full animate-bounce" />
+        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+          <span className="text-sm font-body tracking-wide font-medium">Exploring Intelligence both-Human & Artificial</span>
+          <div className="w-6 h-10 border-2 border-muted-foreground/40 rounded-full flex justify-center pt-2">
+            <div className="w-1.5 h-3 bg-primary rounded-full animate-bounce" />
           </div>
         </div>
       </div>

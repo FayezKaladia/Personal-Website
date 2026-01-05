@@ -76,13 +76,13 @@ export const defaultPortfolioData: PortfolioData = {
     role: "AI & Machine Learning Engineer",
     tagline: "Building intelligent systems that shape the future",
     summary: "AI & Machine Learning Engineering student with a First Class Diploma in AI and ML, currently pursuing BE in CSE (AI & ML). Passionate about developing innovative machine learning solutions and pushing the boundaries of artificial intelligence.",
-    email: "contact@example.com",
+    email: "fayezkaladia@gmail.com",
     location: "India",
     resumeUrl: "#",
   },
   social: {
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
+    github: "https://github.com/FayezKaladia",
+    linkedin:"https://www.linkedin.com/in/mohammed-fayez-kaladia-b24b20375",
     twitter: "https://twitter.com",
   },
   experience: [
