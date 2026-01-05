@@ -58,8 +58,8 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
           )}
           style={{ transitionDelay: '600ms' }}
         >
-          <p className="font-display text-xl sm:text-2xl md:text-3xl text-muted-foreground font-light tracking-wide">
-            {role}
+          <p className="font-display text-xl sm:text-2xl md:text-3xl text-gradient font-light tracking-wide animate-pulse">
+            Artificial Intelligence & Machine learning engineer
           </p>
         </div>
 

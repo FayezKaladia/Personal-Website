@@ -1,0 +1,3 @@
+- [x] Change HeroSection.tsx greeting to "hi im Fayez"
+- [x] Update IntroSection.tsx role to "Artificial Intelligence & Machine learning engineer" with color and animation
+- [ ] Test the changes by running the site
