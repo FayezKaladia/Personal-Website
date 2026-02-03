@@ -262,6 +262,23 @@ export const defaultPortfolioData: PortfolioData = {
       githubUrl: "https://github.com",
       featured: false,
     },
+    {
+      id: "proj-5",
+      title: "Predictive Maintenance System",
+      description: "Machine learning system for predicting equipment failures using IoT sensor data and anomaly detection algorithms.",
+      technologies: ["Python", "TensorFlow", "React", "FastAPI"],
+      githubUrl: "https://github.com",
+      liveUrl: "https://demo.com",
+      featured: false,
+    },
+    {
+      id: "proj-6",
+      title: "Multi-modal AI Chatbot",
+      description: "Intelligent conversational AI system capable of processing text, voice, and image inputs with contextual understanding.",
+      technologies: ["Python", "Transformers", "FastAPI", "WebSocket"],
+      githubUrl: "https://github.com",
+      featured: false,
+    },
   ],
   achievements: [
     {

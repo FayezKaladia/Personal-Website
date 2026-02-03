@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useScroll } from 'framer-motion';
 import { useScrollReveal, useStaggeredReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
@@ -73,6 +73,7 @@ interface ExperienceCardProps {
 
 const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, delay, isLeft }) => {
   const { ref, isRevealed } = useScrollReveal<HTMLDivElement>();
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
@@ -91,8 +92,19 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, delay, isLe
         style={{ transitionDelay: `${delay}ms`, top: '2rem' }}
       />
 
+      {/* Glow background */}
+      <motion.div
+        animate={isHovered ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+        transition={{ duration: 0.3 }}
+        className="absolute inset-0 -z-10 rounded-2xl bg-blue-500/20 blur-2xl pointer-events-none"
+      />
+
       {/* Card */}
-      <div
+      <motion.div
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        animate={isHovered ? { y: -12 } : { y: 0 }}
+        transition={{ duration: 0.3, ease: 'easeOut' }}
         className={cn(
           'glass-elevated rounded-2xl p-4 md:p-6 reveal-up transition-all duration-400',
           isRevealed && 'revealed'
@@ -145,7 +157,7 @@ const ExperienceCard: React.FC<ExperienceCardProps> = ({ experience, delay, isLe
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };
