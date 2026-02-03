@@ -42,7 +42,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ education }) => {
           {/** Map education entries to timeline data with requested date labels **/}
           {(() => {
             const dateLabels = [
-              '2025 - 2029',
+              '2025 - 2028',
               '2023 - 2025',
               '2021 - 2023',
               '2021 onwards',
