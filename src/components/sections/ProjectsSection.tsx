@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useScrollReveal, useStaggeredReveal } from '@/hooks/useScrollReveal';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Github, ExternalLink, Star } from 'lucide-react';
 import type { ProjectItem } from '@/data/portfolio';
+import { motion } from 'framer-motion';
 
 interface ProjectsSectionProps {
   projects: ProjectItem[];
@@ -74,40 +75,75 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay, featured }) => {
   const { ref, isRevealed } = useScrollReveal<HTMLDivElement>();
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
+    <motion.div
       ref={ref}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      animate={{
+        y: isHovered ? -8 : 0,
+        transition: { duration: 0.3 },
+      }}
       className={cn(
-        'glass-elevated rounded-2xl overflow-hidden group reveal-up hover:glow-subtle transition-all duration-500',
+        'glass-elevated rounded-2xl overflow-hidden group reveal-up hover:glow-subtle transition-all duration-500 relative',
         featured && 'md:col-span-1',
         isRevealed && 'revealed'
       )}
       style={{ transitionDelay: `${delay}ms` }}
     >
+      {/* Hover glow background */}
+      {isHovered && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent blur-2xl -z-10"
+        />
+      )}
+
       {/* Project Image Placeholder */}
       <div className="relative h-48 bg-gradient-to-br from-primary/10 to-glow-secondary/10 overflow-hidden">
         <div className="absolute inset-0 bg-noise opacity-30" />
-        <div className="absolute inset-0 flex items-center justify-center">
+        <motion.div
+          animate={{
+            scale: isHovered ? 1.1 : 1,
+            rotate: isHovered ? 2 : 0,
+          }}
+          transition={{ duration: 0.4 }}
+          className="absolute inset-0 flex items-center justify-center"
+        >
           <div className="w-16 h-16 glass rounded-2xl flex items-center justify-center">
             <span className="font-display text-2xl font-bold text-primary">
               {project.title.charAt(0)}
             </span>
           </div>
-        </div>
+        </motion.div>
         
         {/* Featured badge */}
         {featured && (
-          <div className="absolute top-4 right-4 flex items-center gap-1 glass px-3 py-1 rounded-full text-xs font-medium text-primary">
+          <motion.div
+            animate={{ scale: isHovered ? 1.1 : 1 }}
+            transition={{ duration: 0.3 }}
+            className="absolute top-4 right-4 flex items-center gap-1 glass px-3 py-1 rounded-full text-xs font-medium text-primary"
+          >
             <Star className="w-3 h-3 fill-primary" />
             <span>Featured</span>
-          </div>
+          </motion.div>
         )}
 
         {/* Hover overlay */}
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center gap-4"
+        >
           {project.githubUrl && (
-            <a
+            <motion.a
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -115,10 +151,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay, featured }) =
               aria-label="View on GitHub"
             >
               <Github className="w-5 h-5" />
-            </a>
+            </motion.a>
           )}
           {project.liveUrl && (
-            <a
+            <motion.a
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -126,32 +164,45 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay, featured }) =
               aria-label="View live demo"
             >
               <ExternalLink className="w-5 h-5" />
-            </a>
+            </motion.a>
           )}
-        </div>
+        </motion.div>
       </div>
 
       {/* Content */}
       <div className="p-6 space-y-4">
-        <h3 className="font-display text-xl font-semibold group-hover:text-primary transition-colors">
+        <motion.h3
+          animate={{ color: isHovered ? 'hsl(var(--primary))' : 'hsl(var(--foreground))' }}
+          transition={{ duration: 0.3 }}
+          className="font-display text-xl font-semibold"
+        >
           {project.title}
-        </h3>
+        </motion.h3>
         
         <p className="text-muted-foreground text-sm font-body line-clamp-2">
           {project.description}
         </p>
 
         {/* Technologies */}
-        <div className="flex flex-wrap gap-2 pt-2">
-          {project.technologies.map((tech) => (
-            <span
+        <motion.div
+          animate={{
+            gap: isHovered ? '0.75rem' : '0.5rem',
+          }}
+          transition={{ duration: 0.3 }}
+          className="flex flex-wrap pt-2"
+        >
+          {project.technologies.map((tech, idx) => (
+            <motion.span
               key={tech}
-              className="px-2 py-1 text-xs bg-secondary text-secondary-foreground rounded-md font-body"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: idx * 0.05 }}
+              className="px-3 py-1 text-xs bg-primary/20 text-primary rounded-lg font-body font-medium border border-primary/30"
             >
               {tech}
-            </span>
+            </motion.span>
           ))}
-        </div>
+        </motion.div>
 
         {/* CTA */}
         <div className="flex gap-2 pt-2">
@@ -173,7 +224,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay, featured }) =
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

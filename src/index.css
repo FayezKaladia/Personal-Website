@@ -47,6 +47,76 @@
   .dark {
     --background: 240 10% 4%;
     --foreground: 0 0% 98%;
+
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 190 100% 50%;
+    --primary-foreground: 240 10% 4%;
+
+    --secondary: 240 10% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 10% 15%;
+    --muted-foreground: 240 5% 55%;
+
+    --accent: 190 80% 45%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 10% 18%;
+    --input: 240 10% 18%;
+    --ring: 190 100% 50%;
+
+    /* Custom tokens */
+    --glass-bg: 240 10% 8%;
+    --glass-border: 240 10% 20%;
+    --glow-primary: 190 100% 50%;
+    --glow-secondary: 260 80% 60%;
+    --surface-elevated: 240 10% 10%;
+  }
+
+  /* Light mode */
+  html {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 4%;
+
+    --card: 0 0% 98%;
+    --card-foreground: 240 10% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 4%;
+
+    --primary: 190 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 10% 90%;
+    --secondary-foreground: 240 10% 4%;
+
+    --muted: 240 10% 85%;
+    --muted-foreground: 240 10% 35%;
+
+    --accent: 190 80% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 10% 88%;
+    --input: 240 10% 88%;
+    --ring: 190 100% 50%;
+
+    /* Custom tokens */
+    --glass-bg: 240 10% 95%;
+    --glass-border: 240 10% 80%;
+    --glow-primary: 190 100% 50%;
+    --glow-secondary: 260 80% 60%;
+    --surface-elevated: 240 10% 98%;
   }
 }
 

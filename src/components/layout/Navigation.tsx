@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Home, Briefcase, GraduationCap, Code, Trophy, FolderKanban, Mail, Menu, X } from 'lucide-react';
+import CinematicThemeSwitcher from '@/components/ui/cinematic-theme-switcher';
 
 interface NavItem {
   id: string;
@@ -27,6 +29,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection = 'home' }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState(activeSection);
+  const [isHoveredNav, setIsHoveredNav] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,21 +70,42 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection = 'home' }) => {
           isScrolled ? 'top-4' : 'top-6'
         )}
       >
-        <div className="glass-elevated rounded-full px-2 py-2 flex items-center gap-1">
+        <div
+          onMouseEnter={() => setIsHoveredNav(true)}
+          onMouseLeave={() => setIsHoveredNav(false)}
+          className={cn(
+            'glass-elevated rounded-full flex items-center gap-2 transition-all duration-300 transform',
+            isScrolled && !isHoveredNav ? 'px-1 py-0.5 scale-50' : 'px-3 py-2 scale-100'
+          )}
+        >
           {navItems.map((item) => (
-            <button
+            <motion.button
               key={item.id}
               onClick={() => handleNavClick(item.href)}
+              whileHover={{ scale: 1.04, y: -2 }}
+              whileTap={{ scale: 0.98 }}
               className={cn(
-                'relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300',
+                'relative rounded-full font-semibold transition-all duration-200',
+                isScrolled && !isHoveredNav
+                  ? 'px-3 py-1 text-sm md:text-base'
+                  : 'px-4 py-2 text-base md:text-lg',
                 currentSection === item.id
-                  ? 'text-primary tubelight'
-                  : 'text-muted-foreground hover:text-foreground'
+                  ? 'text-primary tubelight before:absolute before:-bottom-2 before:left-1/2 before:-translate-x-1/2 before:w-6 before:h-1 before:rounded-full before:bg-primary/80'
+                  : 'text-muted-foreground hover:text-foreground hover:scale-105'
               )}
             >
-              {item.label}
-            </button>
+              <span className="inline-flex items-center gap-2">
+                <span className="hidden md:inline-flex">{item.icon}</span>
+                <span>{item.label}</span>
+              </span>
+            </motion.button>
           ))}
+
+          {/* Theme Switcher */}
+          <div className="h-8 w-px bg-border/50 mx-1" />
+          <div className="px-2">
+            <CinematicThemeSwitcher />
+          </div>
         </div>
       </nav>
 
@@ -115,6 +139,10 @@ const Navigation: React.FC<NavigationProps> = ({ activeSection = 'home' }) => {
           onClick={() => setIsMobileMenuOpen(false)}
         />
         <div className="absolute inset-x-4 top-20 glass-elevated rounded-2xl p-4">
+          <div className="flex items-center justify-between mb-4 pb-4 border-b border-border/50">
+            <h3 className="text-sm font-semibold text-foreground">Navigation</h3>
+            <CinematicThemeSwitcher />
+          </div>
           <div className="grid grid-cols-4 gap-2">
             {navItems.map((item) => (
               <button

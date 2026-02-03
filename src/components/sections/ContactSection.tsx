@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Mail, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 
 interface ContactSectionProps {
   email: string;
@@ -56,78 +57,108 @@ const ContactSection: React.FC<ContactSectionProps> = ({ email, location, social
           )}
         >
           {/* Contact Info */}
-          <div className="space-y-8">
+          <motion.div 
+            className="space-y-8"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
             <div className="glass-elevated rounded-2xl p-8 space-y-6">
               {/* Email */}
-              <a
+              <motion.a
                 href={`mailto:${email}`}
                 className="flex items-start gap-4 group"
+                whileHover={{ x: 4 }}
+                transition={{ duration: 0.3 }}
               >
-                <div className="w-12 h-12 glass rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                <motion.div 
+                  className="w-12 h-12 glass rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                >
                   <Mail className="w-5 h-5 text-primary" />
-                </div>
+                </motion.div>
                 <div>
                   <p className="text-sm text-muted-foreground font-body mb-1">Email</p>
                   <p className="font-display font-medium group-hover:text-primary transition-colors">
                     {email}
                   </p>
                 </div>
-              </a>
+              </motion.a>
 
               {/* Location */}
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 glass rounded-xl flex items-center justify-center shrink-0">
+              <motion.div 
+                className="flex items-start gap-4"
+                whileHover={{ x: 4 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.div 
+                  className="w-12 h-12 glass rounded-xl flex items-center justify-center shrink-0"
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                >
                   <MapPin className="w-5 h-5 text-primary" />
-                </div>
+                </motion.div>
                 <div>
                   <p className="text-sm text-muted-foreground font-body mb-1">Location</p>
                   <p className="font-display font-medium">{location}</p>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Social Links */}
               {social && (
-                <div className="pt-4 border-t border-border/50">
+                <motion.div 
+                  className="pt-4 border-t border-border/50"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  viewport={{ once: true }}
+                >
                   <p className="text-sm text-muted-foreground font-body mb-4">Follow me on</p>
                   <div className="flex gap-3">
                     {social.github && (
-                      <a
+                      <motion.a
                         href={social.github}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="glass p-3 rounded-xl hover:bg-primary/20 transition-colors"
                         aria-label="GitHub"
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
                       >
                         <Github className="w-5 h-5" />
-                      </a>
+                      </motion.a>
                     )}
                     {social.linkedin && (
-                      <a
+                      <motion.a
                         href={social.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="glass p-3 rounded-xl hover:bg-primary/20 transition-colors"
                         aria-label="LinkedIn"
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
                       >
                         <Linkedin className="w-5 h-5" />
-                      </a>
+                      </motion.a>
                     )}
                     {social.twitter && (
-                      <a
+                      <motion.a
                         href={social.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="glass p-3 rounded-xl hover:bg-primary/20 transition-colors"
                         aria-label="Twitter"
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
                       >
                         <Twitter className="w-5 h-5" />
-                      </a>
+                      </motion.a>
                     )}
                   </div>
-                </div>
+                </motion.div>
               )}
             </div>
-          </div>
+          </motion.div>
 
           {/* Contact Form */}
           <div className="glass-elevated rounded-2xl p-8">

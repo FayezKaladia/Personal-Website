@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ShaderAnimation } from '@/components/ui/shader-lines';
+import { Spotlight } from '@/components/ui/spotlight';
 
 interface IntroSectionProps {
   name: string;
@@ -13,6 +14,20 @@ interface IntroSectionProps {
 const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x, y });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setTilt({ x: 0, y: 0 });
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoaded(true), 100);
@@ -26,6 +41,9 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
 
   return (
     <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className={cn(
         'fixed inset-0 z-50 flex flex-col items-center justify-center bg-background transition-all duration-800',
         isExiting && 'opacity-0 scale-105'
@@ -44,10 +62,14 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
         {/* Morphing name */}
         <h1
           className={cn(
-            'font-display text-5xl sm:text-7xl md:text-8xl font-bold mb-4 morph-text transition-all duration-1000',
+            'font-display text-6xl sm:text-8xl md:text-9xl font-extrabold mb-4 morph-text transition-all duration-1000 text-white',
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
-          style={{ transitionDelay: '200ms' }}
+          style={{
+            transitionDelay: '200ms',
+            transform: `perspective(1000px) rotateX(${tilt.y * -6}deg) rotateY(${tilt.x * 8}deg) translateZ(0)`,
+            textShadow: '0 6px 30px rgba(0,0,0,0.6)',
+          }}
         >
           {name}
         </h1>
@@ -60,15 +82,17 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
           )}
           style={{ transitionDelay: '600ms' }}
         >
-          <p className="font-display text-xl sm:text-2xl md:text-3xl text-gradient font-light tracking-wide animate-pulse">
-            Artificial Intelligence & Machine learning engineer
-          </p>
+          <div className="inline-block px-4 py-2 bg-black/50 backdrop-blur-sm rounded-md">
+            <p className="font-display text-lg sm:text-2xl md:text-3xl text-white font-light tracking-wide">
+              Artificial Intelligence & Machine Learning Engineer
+            </p>
+          </div>
         </div>
 
         {/* Decorative line */}
         <div
           className={cn(
-            'w-24 h-px mx-auto my-10 bg-gradient-to-r from-transparent via-primary to-transparent transition-all duration-1000',
+            'w-32 h-px mx-auto mt-12 mb-8 bg-gradient-to-r from-transparent via-primary to-transparent transition-all duration-1000',
             isLoaded ? 'opacity-100 scale-x-100' : 'opacity-0 scale-x-0'
           )}
           style={{ transitionDelay: '900ms' }}
@@ -77,16 +101,16 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
         {/* CTA Buttons */}
         <div
           className={cn(
-            'flex flex-col sm:flex-row items-center justify-center gap-4 transition-all duration-1000',
+            'flex flex-col sm:flex-row items-center justify-center gap-4 mt-6 transition-all duration-1000',
             isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
           style={{ transitionDelay: '1200ms' }}
         >
           <Button
             variant="liquid"
-            size="xl"
+            size="lg"
             onClick={handleEnter}
-            className="group min-w-[200px]"
+            className="group min-w-[180px] py-3 px-6"
           >
             <span>Discover My Journey</span>
             <ArrowDown className="w-5 h-5 transition-transform group-hover:translate-y-1" />
@@ -94,21 +118,8 @@ const IntroSection: React.FC<IntroSectionProps> = ({ name, role, onEnter }) => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div
-        className={cn(
-          'absolute bottom-10 left-1/2 -translate-x-1/2 transition-all duration-1000',
-          isLoaded ? 'opacity-80' : 'opacity-0'
-        )}
-        style={{ transitionDelay: '1800ms' }}
-      >
-        <div className="flex flex-col items-center gap-3 text-muted-foreground">
-          <span className="text-sm font-body tracking-wide font-medium">Exploring Intelligence both-Human & Artificial</span>
-          <div className="w-6 h-10 border-2 border-muted-foreground/40 rounded-full flex justify-center pt-2">
-            <div className="w-1.5 h-3 bg-primary rounded-full animate-bounce" />
-          </div>
-        </div>
-      </div>
+      {/* Spotlight to increase contrast when cursor is near text */}
+      <Spotlight className="-translate-x-1/2 -translate-y-1/3 left-1/2 top-1/3" size={280} />
     </div>
   );
 };
