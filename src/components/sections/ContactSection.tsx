@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Mail, MapPin, Send, Github, Linkedin, Twitter } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
-import { ThreeDPhotoCarousel } from '@/components/ui/3d-carousel';
 
 interface ContactSectionProps {
   email: string;
@@ -216,30 +215,6 @@ const ContactSection: React.FC<ContactSectionProps> = ({ email, location, social
             </form>
           </div>
         </div>
-
-        {/* 3D Photo Carousel - Gallery Section */}
-        <motion.div
-          className="mt-20 pt-20 border-t border-border/20"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <div className="text-center mb-12">
-            <span className="inline-block font-body text-primary text-sm font-medium tracking-widest uppercase mb-4">
-              Visual Portfolio
-            </span>
-            <h3 className="font-display text-3xl md:text-4xl font-bold mb-4">
-              Project Gallery
-            </h3>
-            <p className="text-muted-foreground max-w-2xl mx-auto font-body">
-              Explore my work through an interactive 3D carousel. Click on any image to view it in detail.
-            </p>
-          </div>
-          <div className="max-w-6xl mx-auto">
-            <ThreeDPhotoCarousel />
-          </div>
-        </motion.div>
       </div>
     </section>
   );

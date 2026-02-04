@@ -89,20 +89,33 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay, featured }) =
       {/* Project Image Placeholder */}
       <div className="relative h-56 bg-gradient-to-br from-primary/15 to-cyan-500/15 overflow-hidden">
         <div className="absolute inset-0 bg-noise opacity-30" />
-        <motion.div
-          animate={{
-            scale: isHovered ? 1.15 : 1,
-            rotate: isHovered ? 3 : 0,
-          }}
-          transition={{ duration: 0.4 }}
-          className="absolute inset-0 flex items-center justify-center"
-        >
-          <div className="w-20 h-20 glass rounded-2xl flex items-center justify-center border border-primary/30 shadow-2xl">
-            <span className="font-display text-3xl font-bold bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
-              {project.title.charAt(0)}
-            </span>
-          </div>
-        </motion.div>
+        {project.image ? (
+          <motion.img
+            src={project.image}
+            alt={project.title}
+            animate={{
+              scale: isHovered ? 1.08 : 1,
+              rotate: isHovered ? 1.5 : 0,
+            }}
+            transition={{ duration: 0.4 }}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        ) : (
+          <motion.div
+            animate={{
+              scale: isHovered ? 1.15 : 1,
+              rotate: isHovered ? 3 : 0,
+            }}
+            transition={{ duration: 0.4 }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <div className="w-20 h-20 glass rounded-2xl flex items-center justify-center border border-primary/30 shadow-2xl">
+              <span className="font-display text-3xl font-bold bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">
+                {project.title.charAt(0)}
+              </span>
+            </div>
+          </motion.div>
+        )}
         
         {/* Featured badge */}
         {featured && (
@@ -123,19 +136,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay, featured }) =
           transition={{ duration: 0.3 }}
           className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center gap-4"
         >
-          {project.githubUrl && (
-            <motion.a
-              whileHover={{ scale: 1.15 }}
-              whileTap={{ scale: 0.95 }}
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="glass p-4 rounded-xl hover:bg-primary/30 transition-colors border border-primary/30 shadow-xl"
-              aria-label="View on GitHub"
-            >
-              <Github className="w-6 h-6" />
-            </motion.a>
-          )}
           {project.liveUrl && (
             <motion.a
               whileHover={{ scale: 1.15 }}
@@ -187,24 +187,36 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, delay, featured }) =
           ))}
         </motion.div>
 
-        {/* CTA */}
-        <div className="flex gap-3 pt-4">
-          {project.githubUrl && (
-            <Button variant="glass" size="sm" asChild className="font-bold">
-              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                <Github className="w-4 h-4" />
-                <span>Code</span>
-              </a>
-            </Button>
-          )}
-          {project.liveUrl && (
-            <Button variant="glass-primary" size="sm" asChild className="font-bold">
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="w-4 h-4" />
-                <span>Demo</span>
-              </a>
-            </Button>
-          )}
+        {/* CTA and centered GitHub icon with hover glow */}
+        <div className="pt-4 flex flex-col items-center gap-3">
+          <div className="flex gap-3">
+            {project.liveUrl && (
+              <Button variant="glass-primary" size="sm" asChild className="font-bold">
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Demo</span>
+                </a>
+              </Button>
+            )}
+          </div>
+
+          <motion.a
+            href={project.githubUrl ?? '#'}
+            target={project.githubUrl ? '_blank' : undefined}
+            rel={project.githubUrl ? 'noopener noreferrer' : undefined}
+            aria-label={project.githubUrl ? 'View on GitHub' : 'GitHub link not provided'}
+            whileHover={project.githubUrl ? { scale: 1.14, boxShadow: '0 12px 36px rgba(59,130,246,0.18)' } : {}}
+            whileTap={project.githubUrl ? { scale: 0.96 } : {}}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            className={cn(
+              'flex items-center justify-center w-12 h-12 rounded-full transition-transform duration-300 transform',
+              project.githubUrl
+                ? 'bg-background/20 text-muted-foreground cursor-pointer border border-primary/20'
+                : 'bg-muted/10 text-muted-foreground/40 pointer-events-none border border-muted/20'
+            )}
+          >
+            <Github className="w-6 h-6" />
+          </motion.a>
         </div>
       </div>
     </motion.div>

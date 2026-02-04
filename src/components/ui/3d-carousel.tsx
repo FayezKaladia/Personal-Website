@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { memo, useEffect, useLayoutEffect, useMemo, useState } from "react"
 import {
@@ -58,20 +58,20 @@ export function useMediaQuery(
   return matches
 }
 
+// Using filenames: gallery-1.jpg through gallery-6.jpg
+// Place these files inside `public/images/`
 const projectImages = [
-  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1620712014215-c8307f64c121?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&h=300&fit=crop",
-  "https://images.unsplash.com/photo-1620712014215-c8307f64c121?w=300&h=300&fit=crop",
+  '/images/gallery-1.jpg',
+  '/images/gallery-2.jpg',
+  '/images/gallery-3.jpg',
+  '/images/gallery-4.jpg',
+  '/images/gallery-5.jpg',
+  '/images/gallery-6.jpg',
 ]
 
 const duration = 0.15
 const transition = { duration, ease: [0.32, 0.72, 0, 1], filter: "blur(4px)" }
-const transitionOverlay = { duration: 0.5, ease: [0.32, 0.72, 0, 1] }
+const transitionOverlay = { duration: 0.4, ease: [0.32, 0.72, 0, 1] }
 
 const Carousel = memo(
   ({
@@ -100,7 +100,7 @@ const Carousel = memo(
       <div
         className="flex h-full items-center justify-center bg-gradient-to-b from-background/50 to-background"
         style={{
-          perspective: "1000px",
+          perspective: "1200px",
           transformStyle: "preserve-3d",
           willChange: "transform",
         }}
@@ -134,8 +134,8 @@ const Carousel = memo(
         >
           {cards.map((imgUrl, i) => (
             <motion.div
-              key={`key-${imgUrl}-${i}`}
-              className="absolute flex h-full origin-center items-center justify-center rounded-xl bg-background/40 p-2 border border-primary/20"
+              key={`key-${i}`}
+              className="absolute flex h-full origin-center items-center justify-center rounded-2xl bg-background/40 p-4 border border-primary/30 shadow-2xl hover:shadow-primary/50 transition-shadow cursor-pointer"
               style={{
                 width: `${faceWidth}px`,
                 transform: `rotateY(${
@@ -143,14 +143,15 @@ const Carousel = memo(
                 }deg) translateZ(${radius}px)`,
               }}
               onClick={() => handleClick(imgUrl, i)}
+              whileHover={{ scale: 1.08 }}
+              transition={{ duration: 0.3 }}
             >
               <motion.img
                 src={imgUrl}
                 alt={`portfolio_${i}`}
-                layoutId={`img-${imgUrl}`}
-                className="pointer-events-none w-full rounded-xl object-cover aspect-square shadow-lg"
+                layoutId={`img-${i}`}
+                className="pointer-events-none w-full h-full rounded-xl object-cover aspect-square shadow-lg hover:brightness-120 transition-all duration-300"
                 initial={{ filter: "blur(4px)" }}
-                layout="position"
                 animate={{ filter: "blur(0px)" }}
                 transition={transition}
               />
@@ -163,63 +164,75 @@ const Carousel = memo(
 )
 
 function ThreeDPhotoCarousel() {
-  const [activeImg, setActiveImg] = useState<string | null>(null)
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [isCarouselActive, setIsCarouselActive] = useState(true)
   const controls = useAnimation()
-  const cards = useMemo(
-    () => projectImages,
-    []
-  )
+  const cards = useMemo(() => projectImages, [])
 
   useEffect(() => {
     console.log("Carousel images loaded:", cards.length)
   }, [cards])
 
-  const handleClick = (imgUrl: string) => {
-    setActiveImg(imgUrl)
+  const handleClick = (imgUrl: string, index: number) => {
+    setActiveIndex(index)
     setIsCarouselActive(false)
     controls.stop()
   }
 
   const handleClose = () => {
-    setActiveImg(null)
+    setActiveIndex(null)
     setIsCarouselActive(true)
   }
 
   return (
     <motion.div layout className="relative">
       <AnimatePresence mode="sync">
-        {activeImg && (
+        {activeIndex !== null && (
           <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            layoutId={`img-container-${activeImg}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            layoutId={`img-container-${activeIndex}`}
             layout="position"
             onClick={handleClose}
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 m-5 md:m-36 lg:mx-[19rem] rounded-3xl cursor-pointer"
+            className="fixed inset-0 bg-black/70 backdrop-blur-lg flex items-center justify-center z-50 p-4 md:p-8 cursor-pointer"
             style={{ willChange: "opacity" }}
             transition={transitionOverlay}
           >
-            <motion.img
-              layoutId={`img-${activeImg}`}
-              src={activeImg}
-              className="max-w-full max-h-full rounded-lg shadow-2xl"
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              transition={{
-                delay: 0.1,
-                duration: 0.5,
-                ease: [0.25, 0.1, 0.25, 1],
-              }}
-              style={{
-                willChange: "transform",
-              }}
-            />
+            <motion.div
+              className="relative w-full max-w-5xl max-h-[90vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <motion.img
+                layoutId={`img-${activeIndex}`}
+                src={cards[activeIndex ?? 0]}
+                className="max-w-full max-h-[90vh] rounded-2xl shadow-2xl object-contain"
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.7, opacity: 0 }}
+                transition={{
+                  duration: 0.4,
+                  ease: [0.23, 1, 0.320, 1],
+                }}
+                style={{
+                  willChange: "transform, opacity",
+                }}
+              />
+              <motion.button
+                onClick={handleClose}
+                className="absolute -top-8 -right-8 md:top-4 md:right-4 w-12 h-12 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-sm flex items-center justify-center text-white transition-colors border border-white/20"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </motion.button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="relative h-[500px] w-full overflow-hidden">
+      <div className="relative h-[500px] w-full overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-b from-background/20 to-background/5 shadow-xl">
         <Carousel
           handleClick={handleClick}
           controls={controls}
